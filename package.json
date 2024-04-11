@@ -1,0 +1,22 @@
+{
+  "name": "adocao",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julioroque/AdotePet.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julioroque/AdotePet/issues"
+  },
+  "homepage": "https://github.com/julioroque/AdotePet#readme",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
