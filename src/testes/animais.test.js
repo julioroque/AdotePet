@@ -17,3 +17,10 @@ test('editarAnimal edita os detalhes de um animal', () => {
     expect(animal.nome).toBe('Miau');
     expect(animal.idade).toBe(4);
   });
+
+  test('encontrarAnimalPorId encontra um animal por ID', () => {
+    adicionarAnimal('Pipoca', 'Hamster', 2, 'Hamster fofinho');
+    const animal = encontrarAnimalPorId(3);
+    console.log('encontra um animal por ID  =>    ', animal);
+    expect(animal.nome).toBe('Pipoca');
+  });
