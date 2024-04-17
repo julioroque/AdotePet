@@ -24,3 +24,11 @@ test('editarAnimal edita os detalhes de um animal', () => {
     console.log('encontra um animal por ID  =>    ', animal);
     expect(animal.nome).toBe('Pipoca');
   });
+
+  test('removerAnimalPorId remove um animal por ID', () => {
+    adicionarAnimal('Bolota', 'Coelho', 1, 'Coelho saltitante');
+    removerAnimalPorId(4);
+    const animal = encontrarAnimalPorId(4);
+    console.log('remove um animal por ID   =>  ', animal);
+    expect(animal).toBeUndefined();
+  });
