@@ -8,3 +8,7 @@ describe('Testes de adoção', () => {
     pets.push(adicionarPet(2, 'Gato', 'Siames', 3, 'Fêmea', 'Independente'));
   });
   
+ test('verificarPetParaAdotar deve retornar um pet para adotar', () => {
+    const pet = verificarPetParaAdotar(pets);
+    expect(pet).toBeTruthy();
+  });
