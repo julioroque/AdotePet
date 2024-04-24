@@ -18,4 +18,10 @@ describe('Testes de adoção', () => {
     expect(adocao).toBeInstanceOf(Adocao);
     expect(adocao.pet.tutor).toBe('João');
   });
+
+  test('adotarPet deve retornar uma mensagem se não houver pets para adotar', () => {
+    pets.forEach(pet => pet.tutor = 'Maria');
+    const adocao = adotarPet(2, 'João', pets);
+    expect(adocao).toBe('Desculpe, não há pets disponíveis para adoção no momento.');
+  });
 });
