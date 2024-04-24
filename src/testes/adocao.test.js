@@ -8,7 +8,14 @@ describe('Testes de adoção', () => {
     pets.push(adicionarPet(2, 'Gato', 'Siames', 3, 'Fêmea', 'Independente'));
   });
   
- test('verificarPetParaAdotar deve retornar um pet para adotar', () => {
+  test('verificarPetParaAdotar deve retornar um pet para adotar', () => {
     const pet = verificarPetParaAdotar(pets);
     expect(pet).toBeTruthy();
   });
+
+  test('adotarPet deve retornar uma nova adoção', () => {
+    const adocao = adotarPet(1, 'João', pets);
+    expect(adocao).toBeInstanceOf(Adocao);
+    expect(adocao.pet.tutor).toBe('João');
+  });
+});
