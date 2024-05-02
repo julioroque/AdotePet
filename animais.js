@@ -7,22 +7,71 @@ class Pets {
     this.sexo = sexo;
     this.descricao = descricao;
   }
+
+  static renderPet(pet) {
+    return {
+      id: pet.id,
+      animal: pet.animal,
+      raca: pet.raca,
+      idade: pet.idade,
+      sexo: pet.sexo,
+      descricao: pet.descricao
+    };
+  }
+
+  static create(pets, data) {
+    const newPet = new Pets(
+      pets.length + 1,
+      data.animal,
+      data.raca,
+      data.idade,
+      data.sexo,
+      data.descricao
+    );
+    pets.push(newPet);
+    return this.renderPet(newPet);
+  }
+
+  static listAllPets(pets) {
+    return pets.map(pet => this.renderPet(pet));
+  }
+
+  static listPet(pets, id) {
+    const pet = this.findById(pets, id);
+    if (pet) {
+      return this.renderPet(pet);
+    }
+    return null;
+  }
+
+  static findById(pets, id) {
+    return pets.find(pet => pet.id === id);
+  }
+
+  static update(pets, id, data) {
+    const pet = this.findById(pets, id);
+    if (pet) {
+      pet.animal = data.animal || pet.animal;
+      pet.raca = data.raca || pet.raca;
+      pet.idade = data.idade || pet.idade;
+      pet.sexo = data.sexo || pet.sexo;
+      pet.descricao = data.descricao || pet.descricao;
+    }
+    return pet;
+  }
+
+  static delete(pets, id) {
+    const pet = this.findById(pets, id);
+    if (pet) {
+      const index = pets.indexOf(pet);
+      pets.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
 }
 
-// Função para adicionar um animal
-function adicionarPet(id, animal, raca, idade, sexo, descricao) {
-  const pet = new Pets(id, animal, raca, idade, sexo, descricao);
-  return pet;
-}
+module.exports = Pets;
 
-// Método para editar um animal
-function editarPet(pet, novaRaca, novaIdade, novoSexo, novaDescricao) {
-  pet.raca = novaRaca || pet.raca;
-  pet.idade = novaIdade || pet.idade;
-  pet.sexo = novoSexo || pet.sexo;
-  pet.descricao = novaDescricao || pet.descricao;
-}
-
-module.exports = {Pets, adicionarPet, editarPet };
 
 
