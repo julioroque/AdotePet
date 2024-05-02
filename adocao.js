@@ -8,7 +8,7 @@ class Adocao {
   }
 }
 
-// Função para verificar se há um pet para adotar
+// Função para verificar se há um pet para adotar!
 function verificarPetParaAdotar(pets) {
   for (let i = 0; i < pets.length; i++) {
     if (!pets[i].tutor) {
