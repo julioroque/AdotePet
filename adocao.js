@@ -1,5 +1,3 @@
-const { Pets, adicionarPet, editarPet, deletarPet } = require('./animais.js');
-
 class Adocao {
   constructor(id, tutor, pet) {
     this.id = id;
