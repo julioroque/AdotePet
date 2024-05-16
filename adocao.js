@@ -1,57 +1,39 @@
+// Arquivo adocao.js: Define a classe Adocao para representar adoções de animais
+const Pets = require('./animais'); // Importa a classe Pets para usar na lógica de adoção
+
 class Adocao {
   constructor(id, tutor, pet) {
-    this.id = id;
-    this.tutor = tutor;
-    this.pet = pet;
+    this.id = id; // ID único da adoção
+    this.tutor = tutor; // Tutor que adotou o animal
+    this.pet = pet; // Dados do animal adotado
   }
 
-  static verificarPetParaAdotar(pets) {
-    for (let i = 0; i < pets.length; i++) {
-      if (!pets[i].tutor) {
-        return pets[i];
-      }
-    }
-    return null;
-  }
-
-  static adotarPet(id, tutor, pets) {
-    const pet = this.verificarPetParaAdotar(pets);
-    if (pet) {
-      const adocao = new Adocao(id, tutor, pet);
-      pet.tutor = tutor;
-      // Remover o pet adotado da lista de pets
-      deletarPet(pets, pet.id);
-      return adocao;
+  // Método estático para adotar um animal 
+  static adotarPet(id, tutor, pet) {
+    if (!pet.adotado) {
+      const adocao = new Adocao(id, tutor, pet); // Cria uma nova adoção com os dados fornecidos
+      pet.tutor = tutor; // Define o tutor para o animal adotado
+      pet.adotado = true; // Marca o animal como adotado
+      return adocao; // Retorna a adoção realizada
     } else {
-      return 'Desculpe, não há pets disponíveis para adoção no momento.';
+      return 'Este pet já foi adotado!'; // Retorna mensagem se o pet já estiver sido adotado
     }
   }
 
+  // Método estático para listar todas as adoções
+  static listAdocoes(adocoes) {
+    return adocoes.map(adocao => this.renderAdocao(adocao)); // Mapeia todas as adoções e renderiza cada uma delas
+  }
+
+  // Método estático para renderizar uma adoção de forma simplificada
   static renderAdocao(adocao) {
     return {
       id: adocao.id,
       tutor: adocao.tutor,
-      pet: adocao.pet,
+      pet: Pets.renderPet(adocao.pet) // Renderiza o pet da adoção
     };
-  }
-
-  static listAdocoes(adocoes) {
-    return adocoes.map(adocao => this.renderAdocao(adocao));
-  }
-
-  static findAdocaoById(adocoes, id) {
-    return adocoes.find(adocao => adocao.id === id);
-  }
-
-  static editarAdocao(adocoes, id, tutor, pet) {
-    const adocao = this.findAdocaoById(adocoes, id);
-    if (adocao) {
-      adocao.tutor = tutor || adocao.tutor;
-      adocao.pet = pet || adocao.pet;
-      return this.renderAdocao(adocao);
-    }
-    return null;
   }
 }
 
-module.exports = Adocao;
+module.exports = Adocao; // Exporta a classe Adocao para uso em outros arquivos
+
