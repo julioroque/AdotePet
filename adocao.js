@@ -1,5 +1,4 @@
-// Arquivo adocao.js: Define a classe Adocao para representar adoções de animais
-const Pets = require('./animais'); // Importa a classe Pets para usar na lógica de adoção
+const Pets = require('./animais'); 
 
 class Adocao {
   constructor(id, tutor, pet) {
@@ -8,7 +7,7 @@ class Adocao {
     this.pet = pet; // Dados do animal adotado
   }
 
-  // Método estático para adotar um animal 
+  // Método para adotar um animal 
   static adotarPet(id, tutor, pet) {
     if (!pet.adotado) {
       const adocao = new Adocao(id, tutor, pet); // Cria uma nova adoção com os dados fornecidos
@@ -20,12 +19,12 @@ class Adocao {
     }
   }
 
-  // Método estático para listar todas as adoções
+  // Método  para listar todas as adoções
   static listAdocoes(adocoes) {
     return adocoes.map(adocao => this.renderAdocao(adocao)); // Mapeia todas as adoções e renderiza cada uma delas
   }
 
-  // Método estático para renderizar uma adoção de forma simplificada
+  // Método para renderizar uma adoção de forma simplificada
   static renderAdocao(adocao) {
     return {
       id: adocao.id,
@@ -35,5 +34,5 @@ class Adocao {
   }
 }
 
-module.exports = Adocao; // Exporta a classe Adocao para uso em outros arquivos
+module.exports = Adocao;
 

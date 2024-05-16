@@ -1,9 +1,8 @@
-// Arquivo user.js: Define a classe User para representar usuários
 const Pets = require('./animais'); 
 class User {
   constructor(id, name, pet) {
-    this.id = id; // ID único do usuário
-    this.name = name; // Nome do usuário
+    this.id = id; 
+    this.name = name;
   }
 
   // Método estático para renderizar um usuário de forma simplificada
@@ -42,5 +41,4 @@ class User {
     return false; // Retorna false se o usuário não foi encontrado
   }
 }
-
-module.exports = User; // Exporta a classe User para uso em outros arquivos
+module.exports = User;
