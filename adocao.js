@@ -35,4 +35,3 @@ class Adocao {
 }
 
 module.exports = Adocao;
-
