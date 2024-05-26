@@ -3,12 +3,9 @@ const app = express();
 const User = require('./User');
 const Pets = require('./animais');
 const Adocao = require('./adocao');
+const { pets, users, adocoes } = require('./seeds'); // Importa os dados iniciais
 
 app.use(express.json()); // Middleware para o Express reconhecer JSON no corpo da requisição
-
-let users = [];
-let pets = [];
-let adocoes = [];
 
 // Rota inicial
 app.get('/', (req, res) => {
@@ -18,7 +15,7 @@ app.get('/', (req, res) => {
 // Rota para criar um novo usuário
 app.post('/users', (req, res) => {
   const user = User.create(users, req.body);
-  res.status(201).json(User.renderUser(user, [])); // Renderiza o usuário sem animais (por enquanto)
+  res.status(201).json(user); // Corrigido para retornar o usuário criado corretamente
 });
 
 // Rota para listar todos os usuários
@@ -53,11 +50,15 @@ app.post('/adoptions', (req, res) => {
   } else if (pet.adotado) {
     res.status(400).send('Este pet já foi adotado!');
   } else {
-    const adocao = Adocao.adotarPet(adocoes.length + 1, tutor, pet);
-    adocoes.push(adocao);
-    res.status(201).json(Adocao.renderAdocao(adocao));
+    const adocao = Adocao.adotarPet(adocoes, pets, tutor, petId);
+    if (typeof adocao === 'string') {
+      res.status(400).send(adocao);
+    } else {
+      res.status(201).json(adocao);
+    }
   }
 });
+
 // Rota para listar todas as adoções
 app.get('/adoptions', (req, res) => {
   const adocaoList = Adocao.listAdocoes(adocoes);
