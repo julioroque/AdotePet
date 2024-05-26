@@ -13,7 +13,7 @@ class Adocao {
       const adocao = new Adocao(id, tutor, pet); // Cria uma nova adoção com os dados fornecidos
       pet.tutor = tutor; // Define o tutor para o animal adotado
       pet.adotado = true; // Marca o animal como adotado
-      return adocao; // Retorna a adoção realizada
+      return adocao ; // Retorna a adoção realizada
     } else {
       return 'Este pet já foi adotado!'; // Retorna mensagem se o pet já estiver sido adotado
     }

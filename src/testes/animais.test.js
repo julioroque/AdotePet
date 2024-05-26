@@ -1,32 +1,38 @@
-const { Pets, adicionarPet, editarPet } = require('../../animais');
+const Pets = require('../../animais');
 
-describe('Testes para animais.js', () => {
+describe('Testes para a classe Pets', () => {
   let pet;
 
   beforeEach(() => {
-    pet = adicionarPet(1, 'Cachorro', 'pinscher', 2, 'Macho', 'Bom cachorro');
+    pet = new Pets('Cachorro', 'Labrador', 3, 'M', 'cachorro palhaço');
   });
 
-  test('adicionarPet deve retornar um novo animal', () => {
-    expect(pet).toEqual({
-      id: 1,
-      animal: 'Cachorro',
-      raca: 'pinscher',
-      idade: 2,
-      sexo: 'Macho',
-      descricao: 'Bom cachorro'
-    });
+  test('Deve criar um novo pet', () => {
+    const petData = { animal: 'Gato', raca: 'Siamês', idade: 2, sexo: 'F', descricao: 'gata surtada' };
+    const newPet = Pets.create([], petData);
+
+    expect(newPet).toMatchObject(petData);
   });
 
-  test('editarPet deve editar os detalhes do animal', () => {
-    editarPet(pet, 'Gato', 3, 'Fêmea', 'Gato preguiçoso');
-    expect(pet).toEqual({
-      id: 1,
-      animal: 'Cachorro',
-      raca: 'Gato',
-      idade: 3,
-      sexo: 'Fêmea',
-      descricao: 'Gato preguiçoso'
-    });
+  test('Deve listar todos os pets', () => {
+    const pets = [pet];
+    const allPets = Pets.listAllPets(pets);
+
+    expect(allPets).toContainEqual(pet);
+  });
+
+  test('Deve encontrar um pet pelo ID', () => {
+    const pets = [pet];
+    const foundPet = Pets.findById(pets, pet.id);
+
+    expect(foundPet).toEqual(pet);
+  });
+
+  test('Deve deletar um pet pelo ID', () => {
+    const pets = [pet];
+    const result = Pets.delete(pets, pet.id);
+
+    expect(result).toBeTruthy();
+    expect(pets).not.toContainEqual(pet);
   });
 });

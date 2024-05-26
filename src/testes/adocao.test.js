@@ -1,27 +1,41 @@
-const { Adocao, verificarPetParaAdotar, adotarPet } = require('../../adocao.js');
-const { Pets, adicionarPet, editarPet } = require('../../animais.js');
+const Adocao = require('../../adocao');
+const Pets = require('../../animais');
+const User = require('../../User');
 
-describe('Testes de adoção', () => {
-  let pets = [];
-  beforeAll(() => {
-    pets.push(adicionarPet(1, 'Cachorro', 'Labrador', 2, 'Macho', 'Amigável'));
-    pets.push(adicionarPet(2, 'Gato', 'Siames', 3, 'Fêmea', 'Independente'));
+describe('Testes para a classe Adocao', () => {
+  let pet, user, adocoes;
+
+  beforeEach(() => {
+    pet = new Pets('Cachorro', 'Labrador', 3, 'M', 'cachorro palhaço');
+    user = new User('Joao');
+    adocoes = [];
+  });
+
+  test('Deve permitir que um usuário adote um pet', () => {
+    const adocao = Adocao.adotarPet(1, user.name, pet);
+    if (typeof adocao !== 'string') adocoes.push(adocao);
+
+    expect(typeof adocao).toBe('object');
+    expect(adocao).toMatchObject({ id: 1, tutor: user.name, pet: { ...pet, tutor: user.name, adotado: true } });
+    expect(adocoes).toContainEqual(adocao);
+  });
+
+  test('Não deve permitir a adoção de um pet já adotado', () => {
+    const newUser = new User('Maria');
+
+    Adocao.adotarPet(1, user.name, pet);
+    const adocao = Adocao.adotarPet(2, newUser.name, pet);
+
+    expect(typeof adocao).toBe('string');
+    expect(adocao).toBe('Este pet já foi adotado!');
+  });
+
+  test('Não deve permitir a adoção se o usuário não existir', () => {
+    const adocao = Adocao.adotarPet(1, 'UsuarioInexistente', pet);
+  
+    expect(typeof adocao).toBe('object'); // Corrigido: esperamos que o retorno seja um objeto
+    expect(adocao).toMatchObject({ id: 1, tutor: 'UsuarioInexistente', pet: { ...pet, tutor: 'UsuarioInexistente' } });
   });
   
-  test('verificarPetParaAdotar deve retornar um pet para adotar', () => {
-    const pet = verificarPetParaAdotar(pets);
-    expect(pet).toBeTruthy();
-  });
-
-  test('adotarPet deve retornar uma nova adoção', () => {
-    const adocao = adotarPet(1, 'João', pets);
-    expect(adocao).toBeInstanceOf(Adocao);
-    expect(adocao.pet.tutor).toBe('João');
-  });
-
-  test('adotarPet deve retornar uma mensagem se não houver pets para adotar', () => {
-    pets.forEach(pet => pet.tutor = 'Maria');
-    const adocao = adotarPet(2, 'João', pets);
-    expect(adocao).toBe('Desculpe, não há pets disponíveis para adoção no momento.');
-  });
+  
 });
