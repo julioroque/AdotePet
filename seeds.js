@@ -1,6 +1,6 @@
-const Pets = require('./Models/animais');
-const User = require('./Models/User');
-const Adocao = require('./Models/adocao');
+const Pets = require('./animais');
+const User = require('./User');
+const Adocao = require('./adocao');
 
 const pets = [];
 const users = [];
@@ -46,22 +46,14 @@ function seed() {
   const user3 = User.create(users, { name: 'Aline' });
 
   // Realiza algumas adoções
-  const adocao1 = Adocao.adotarPet(1, user1.name, pet1);
+  const adocao1 = Adocao.adotarPet(adocoes, users, 1, user1.id, pet1);
   if (typeof adocao1 !== 'string') adocoes.push(adocao1);
 
-  const adocao2 = Adocao.adotarPet(2, user2.name, pet2);
+  const adocao2 = Adocao.adotarPet(adocoes, users, 2, user2.id, pet2);
   if (typeof adocao2 !== 'string') adocoes.push(adocao2);
 
-  const adocao3 = Adocao.adotarPet(3, user1.name, pet3);
+  const adocao3 = Adocao.adotarPet(adocoes, users, 3, user1.id, pet3);
   if (typeof adocao3 !== 'string') adocoes.push(adocao3);
-
-  // Tentativa de adoção de um pet já adotado
-  const adocao4 = Adocao.adotarPet(4, user3.name, pet1);
-  if (typeof adocao4 !== 'string') adocoes.push(adocao4);
-
-  // Adição de mais adoções se necessário
-  const adocao5 = Adocao.adotarPet(5, user3.name, pet4);
-  if (typeof adocao5 !== 'string') adocoes.push(adocao5);
 }
 
 seed();
