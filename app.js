@@ -4,6 +4,9 @@ const User = require('./User');
 const Pets = require('./animais');
 const Adocao = require('./adocao');
 const { pets, users, adocoes } = require('./seeds'); // Importa os dados iniciais
+const User = require('./Models/User');
+const Pets = require('./Models/animais');
+const Adocao = require('./Models/adocao');
 
 app.use(express.json()); // Middleware para o Express reconhecer JSON no corpo da requisição
 
