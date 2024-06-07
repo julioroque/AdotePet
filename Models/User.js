@@ -1,6 +1,3 @@
-const Pets = require('./animais'); 
-const Adocao = require('./adocao'); 
-
 class User {
   constructor(id, name) {
     this.id = id; 
