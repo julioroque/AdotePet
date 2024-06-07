@@ -50,7 +50,7 @@ app.post('/adoptions', (req, res) => {
   } else if (pet.adotado) {
     res.status(400).send('Este pet já foi adotado!');
   } else {
-    const adocao = Adocao.adotarPet(adocoes, users, adocoes.length + 1, tutor.id, pet);
+const adocao = Adocao.adotarPet(adocoes, users, adocoes.length + 1, tutor.id, pet);
     if (typeof adocao === 'string') {
       res.status(400).send(adocao);
     } else {
@@ -60,7 +60,6 @@ app.post('/adoptions', (req, res) => {
     }
   }
 });
-
 
 // Rota para listar todas as adoções
 app.get('/adoptions', (req, res) => {
