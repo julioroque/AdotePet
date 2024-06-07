@@ -1,5 +1,4 @@
-const Pets = require('./animais'); 
-const Adocao = require('./adocao'); 
+const Pets = require('./animais');
 
 class User {
   constructor(id, name) {
