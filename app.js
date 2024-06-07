@@ -1,15 +1,15 @@
 const express = require('express');
 const app = express();
-const User = require('./User');
-const Pets = require('./animais');
-const Adocao = require('./adocao');
+const User = require('./Models/User');
+const Pets = require('./Models/animais');
+const Adocao = require('./Models/adocao');
 const { pets, users, adocoes } = require('./seeds'); // Importa os dados iniciais
 
 app.use(express.json()); // Middleware para o Express reconhecer JSON no corpo da requisição
 
 // Rota inicial
 app.get('/', (req, res) => {
-  res.send('Olá Tutores!!');
+  res.send('Olá Tutores!');
 });
 
 // Rota para criar um novo usuário
