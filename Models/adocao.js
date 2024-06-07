@@ -10,7 +10,10 @@ class Adocao {
 
   // Método para adotar um animal 
   static adotarPet(adocoes, users, id, userId, pet) {
-    const tutor = User.findById(users, userId);
+    console.log("Users:", users); // Adicione este log
+    console.log("User.findById:", User.findById); // Adicione este log
+
+    const tutor = User.findById(users, userId); // Verifica se o método está definido
     if (!tutor) {
       return 'Usuário não encontrado';
     }
@@ -27,20 +30,19 @@ class Adocao {
     }
   }
 
-  // No método para listar adoções
-static listAdocoes(adocoes) {
-  return adocoes.map(adocao => this.renderAdocao(adocao));
-}
+  // Método para listar adoções
+  static listAdocoes(adocoes) {
+    return adocoes.map(adocao => this.renderAdocao(adocao));
+  }
 
-// No método renderAdocao
-static renderAdocao(adocao) {
-  return {
-    id: adocao.id,
-    tutor: adocao.tutor.name, // Use apenas o ID do tutor
-    pet: Pets.renderPet(adocao.pet) // Renderize o pet da adoção
-  };
-}
-
+  // Método para renderizar uma adoção
+  static renderAdocao(adocao) {
+    return {
+      id: adocao.id,
+      tutor: adocao.tutor.name, // Use apenas o ID do tutor
+      pet: Pets.renderPet(adocao.pet) // Renderize o pet da adoção
+    };
+  }
 }
 
 module.exports = Adocao;

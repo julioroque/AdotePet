@@ -1,5 +1,3 @@
-const Pets = require('./animais');
-
 class User {
   constructor(id, name) {
     this.id = id; 
