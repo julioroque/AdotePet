@@ -1,12 +1,13 @@
 const Pets = require('./animais'); 
+const Adocao = require('./adocao'); 
+
 class User {
-  constructor(id, name, pet) {
+  constructor(id, name) {
     this.id = id; 
     this.name = name;
   }
 
-  // Método estático para renderizar um usuário de forma simplificada.
-  static renderUser(user, userPets) {
+static renderUser(user, userPets) {
     return {
       id: user.id,
       name: user.name,
@@ -23,7 +24,7 @@ class User {
 
   // Método estático para listar todos os usuários
   static listAllUsers(users) {
-    return users.map(user => this.renderUser(user, [])) // Mapeia e renderiza todos os usuários na lista
+    return users.map(user => this.renderUser(user, [])); // Mapeia e renderiza todos os usuários na lista
   }
 
   // Método estático para encontrar um usuário pelo ID
@@ -41,4 +42,5 @@ class User {
     return false; // Retorna false se o usuário não foi encontrado
   }
 }
+
 module.exports = User;

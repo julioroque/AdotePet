@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
-const User = require('./User');
-const Pets = require('./animais');
-const Adocao = require('./adocao');
+const User = require('./Models/User');
+const Pets = require('./Models/animais');
+const Adocao = require('./Models/adocao');
 const { pets, users, adocoes } = require('./seeds'); // Importa os dados iniciais
 
 app.use(express.json()); // Middleware para o Express reconhecer JSON no corpo da requisição
@@ -50,7 +50,7 @@ app.post('/adoptions', (req, res) => {
   } else if (pet.adotado) {
     res.status(400).send('Este pet já foi adotado!');
   } else {
-    const adocao = Adocao.adotarPet(adocoes, users, adocoes.length + 1, tutor.id, pet);
+const adocao = Adocao.adotarPet(adocoes, users, adocoes.length + 1, tutor.id, pet);
     if (typeof adocao === 'string') {
       res.status(400).send(adocao);
     } else {
@@ -60,7 +60,6 @@ app.post('/adoptions', (req, res) => {
     }
   }
 });
-
 
 // Rota para listar todas as adoções
 app.get('/adoptions', (req, res) => {
