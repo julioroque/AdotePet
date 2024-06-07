@@ -5,13 +5,22 @@ class User {
   constructor(id, name) {
     this.id = id; 
     this.name = name;
+    this.adoptedPets = []; // Lista de pets adotados pelo usuário
   }
 
-static renderUser(user, userPets) {
+  // Método estático para renderizar um usuário de forma simplificada
+  static renderUser(user) {
     return {
       id: user.id,
       name: user.name,
-      pets: userPets.map(pet => Pets.renderPet(pet)) // Renderiza todos os animais do usuário
+      pets: user.adoptedPets.map(pet => Pets.renderPet(pet)) // Renderiza todos os animais adotados pelo usuário
+    };
+  }
+
+  static renderOnlyUser(user) {
+    return {
+      id: user.id,
+      name: user.name,
     };
   }
 
@@ -19,12 +28,12 @@ static renderUser(user, userPets) {
   static create(users, data) {
     const newUser = new User(users.length + 1, data.name); // Cria um novo usuário com um ID incremental
     users.push(newUser); // Adiciona o usuário à lista de usuários
-    return this.renderUser(newUser, []); // Renderiza e retorna o novo usuário criado
+    return this.renderUser(newUser); // Renderiza e retorna o novo usuário criado
   }
 
   // Método estático para listar todos os usuários
   static listAllUsers(users) {
-    return users.map(user => this.renderUser(user, [])); // Mapeia e renderiza todos os usuários na lista
+    return users.map(user => this.renderOnlyUser(user)); // Mapeia e renderiza todos os usuários na lista
   }
 
   // Método estático para encontrar um usuário pelo ID

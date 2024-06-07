@@ -1,6 +1,6 @@
-const Pets = require('./animais');
-const User = require('./User');
-const Adocao = require('./adocao');
+const Pets = require('./Models/animais');
+const User = require('./Models/User');
+const Adocao = require('./Models/adocao');
 
 const pets = [];
 const users = [];
@@ -13,7 +13,7 @@ function seed() {
     raca: 'Labrador',
     idade: 3,
     sexo: 'M',
-    descricao: 'cachorro palhaço!'
+    descricao: 'cachorro palhaço'
   });
 
   const pet2 = Pets.create(pets, {

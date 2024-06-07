@@ -9,7 +9,7 @@ app.use(express.json()); // Middleware para o Express reconhecer JSON no corpo d
 
 // Rota inicial
 app.get('/', (req, res) => {
-  res.send('Olá Tutores!!');
+  res.send('Olá Tutores!');
 });
 
 // Rota para criar um novo usuário
