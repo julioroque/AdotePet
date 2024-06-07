@@ -12,7 +12,7 @@ let adocoes = [];
 
 // Rota inicial
 app.get('/', (req, res) => {
-  res.send('Olá Tutores!');
+  res.send('Olá Tutores!!');
 });
 
 // Rota para criar um novo usuário

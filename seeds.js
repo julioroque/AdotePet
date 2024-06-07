@@ -13,7 +13,7 @@ function seed() {
     raca: 'Labrador',
     idade: 3,
     sexo: 'M',
-    descricao: 'cachorro palhaço'
+    descricao: 'cachorro palhaço!'
   });
 
   const pet2 = Pets.create(pets, {

@@ -15,7 +15,7 @@ const adocaoController = {
       adocoes.push(novaAdocao);
       res.status(200).json(Adocao.renderAdocao(novaAdocao));
     } else {
-      res.status(404).json({ error: 'Usuário ou Pet não encontrado' });
+      res.status(404).json({ error: 'Usuário ou Pet não encontrado!' });
     }
   },
 
