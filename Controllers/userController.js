@@ -16,7 +16,7 @@ const userController = {
     if (User.delete(users, req.params.id)) {
       res.status(200).json({ message: 'Usuário deletado com sucesso' });
     } else {
-      res.status(404).json({ error: 'Usuário não encontrado' });
+      res.status(404).json({ error: 'Usuário não encontrado!' });
     }
   }
 };

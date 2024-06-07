@@ -30,13 +30,13 @@ const petController = {
     if (pet) {
       res.status(200).json(Pets.renderPet(pet));
     } else {
-      res.status(404).json({ error: 'Pet não encontrado' });
+      res.status(404).json({ error: 'Pet não encontrado!' });
     }
   },
 
   deletePet: (req, res) => {
     if (Pets.delete(pets, req.params.id)) {
-      res.status(200).json({ message: 'Pet deletado com sucesso' });
+      res.status(200).json({ message: 'Pet deletado com sucesso!' });
     } else {
       res.status(404).json({ error: 'Pet não encontrado' });
     }

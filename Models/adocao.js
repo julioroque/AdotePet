@@ -4,7 +4,7 @@ class Adocao {
   constructor(id, tutor, pet) {
     this.id = id; // ID único da adoção
     this.tutor = tutor; // Tutor que adotou o animal
-    this.pet = pet; // Dados do animal adotado
+    this.pet = pet; // Dados do animal adotado.
   }
 
   // Método para adotar um animal 

@@ -7,8 +7,7 @@ class User {
     this.name = name;
   }
 
-  // Método estático para renderizar um usuário de forma simplificada
-  static renderUser(user, userPets = []) {
+static renderUser(user, userPets) {
     return {
       id: user.id,
       name: user.name,

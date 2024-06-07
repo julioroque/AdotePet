@@ -46,7 +46,7 @@ class Pets {
     return pets.filter(pet => !pet.adotado).map(pet => this.renderPet(pet));
   }
 
-  // Método para listar pets já adotados
+  // Método para listar pets já adotados.
   static listAdoptedPets(pets) {
     return pets.filter(pet => pet.adotado).map(pet => this.renderPet(pet));
   }
