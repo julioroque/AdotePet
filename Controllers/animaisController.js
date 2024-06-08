@@ -1,46 +1,44 @@
-const Pets = require('../Models/animais');
+const Pets = require('../models/animais');
 
-let pets = [];
+let pets = []; // Aqui você pode usar uma fonte de dados real
 
-const petController = {
-  createPet: (req, res) => {
-    const newPet = Pets.create(pets, req.body);
-    res.status(201).json(Pets.renderPet(newPet));
-  },
+exports.createPet = (req, res) => {
+  const newPet = Pets.create(pets, req.body);
+  res.status(201).json(newPet);
+};
 
-  listAllPets: (req, res) => {
-    res.status(200).json(Pets.listAllPets(pets));
-  },
+exports.listAllPets = (req, res) => {
+  res.json(Pets.listAllPets(pets));
+};
 
-  listAvailablePets: (req, res) => {
-    res.status(200).json(Pets.listAvailablePets(pets));
-  },
+exports.listAvailablePets = (req, res) => {
+  res.json(Pets.listAvailablePets(pets));
+};
 
-  listAdoptedPets: (req, res) => {
-    res.status(200).json(Pets.listAdoptedPets(pets));
-  },
-
-  listPetsByType: (req, res) => {
-    const type = req.params.type;
-    res.status(200).json(Pets.listPetsByType(pets, type));
-  },
-
-  updatePet: (req, res) => {
-    const pet = Pets.update(pets, req.params.id, req.body);
-    if (pet) {
-      res.status(200).json(Pets.renderPet(pet));
-    } else {
-      res.status(404).json({ error: 'Pet não encontrado!' });
-    }
-  },
-
-  deletePet: (req, res) => {
-    if (Pets.delete(pets, req.params.id)) {
-      res.status(200).json({ message: 'Pet deletado com sucesso!' });
-    } else {
-      res.status(404).json({ error: 'Pet não encontrado' });
-    }
+exports.getPetById = (req, res) => {
+  const pet = Pets.findById(pets, parseInt(req.params.id));
+  if (pet) {
+    res.json(pet);
+  } else {
+    res.status(404).json({ message: 'Pet não encontrado' });
   }
 };
 
-module.exports = petController;
+exports.updatePet = (req, res) => {
+  const updatedPet = Pets.update(pets, parseInt(req.params.id), req.body);
+  if (updatedPet) {
+    res.json(updatedPet);
+  } else {
+    res.status(404).json({ message: 'Pet não encontrado' });
+  }
+};
+
+exports.deletePet = (req, res) => {
+  const success = Pets.delete(pets, parseInt(req.params.id));
+  if (success) {
+    res.json({ message: 'Pet deletado com sucesso!' });
+  } else {
+    res.status(404).json({ message: 'Pet não encontrado' });
+  }
+};
+module.exports = exports;

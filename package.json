@@ -18,7 +18,8 @@
   "homepage": "https://github.com/julioroque/AdotePet#readme",
   "devDependencies": {
     "jest": "^29.7.0",
-    "npm": "^10.8.1"
+    "npm": "^10.8.1",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "express": "^4.19.2"
