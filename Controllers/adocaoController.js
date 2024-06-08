@@ -1,27 +1,24 @@
-const Adocao = require('../Models/adocao.js');
-const Pets = require('../Models/animais.js');
-const User = require('../Models/User.js');
+const Adocao = require('../models/Adocao');
+const User = require('../models/User');
+const Pets = require('../models/animais');
 
-let adocoes = [];
+exports.createAdocao = (req, res) => {
+  const { id, userId, petId } = req.body;
+  const users = User.listAllUsers(); // Pega todos os usuários
+  const pets = Pets.listAllPets(); // Pega todos os pets
+  const pet = Pets.findById(pets, petId);
+  const adocoes = []; // Aqui você pode usar uma fonte de dados real
 
-const adocaoController = {
-  adotarPet: (req, res) => {
-    const { userId, petId } = req.body;
-    const user = User.findById(users, userId);
-    const pet = Pets.findById(pets, petId);
-
-    if (user && pet) {
-      const novaAdocao = Adocao.adotarPet(adocoes.length + 1, user, pet);
-      adocoes.push(novaAdocao);
-      res.status(200).json(Adocao.renderAdocao(novaAdocao));
-    } else {
-      res.status(404).json({ error: 'Usuário ou Pet não encontrado!' });
-    }
-  },
-
-  listAdocoes: (req, res) => {
-    res.status(200).json(Adocao.listAdocoes(adocoes));
+  const adocao = Adocao.adotarPet(adocoes, users, id, userId, pet);
+  if (typeof adocao === 'string') {
+    return res.status(400).json({ message: adocao });
   }
+  res.status(201).json(adocao);
 };
 
-module.exports = adocaoController;
+exports.listAdocoes = (req, res) => {
+  const adocoes = []; // Aqui você pode usar uma fonte de dados real
+  res.json(Adocao.listAdocoes(adocoes));
+};
+
+module.exports = exports;
