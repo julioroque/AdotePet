@@ -10,8 +10,7 @@ class Adocao {
 
   // Método para adotar um animal 
   static adotarPet(adocoes, users, id, userId, pet) {
-    console.log("Users:", users);
-    console.log("User.findById:", User.findById);
+    
 
     try {
       const tutor = User.findById(users, userId);
