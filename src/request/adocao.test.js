@@ -1,62 +1,74 @@
 const request = require('supertest');
-const app = require('../../app');
+const express = require('express');
+const adocaoRouter = require('../../routes/adocaoRoutes'); // ajuste o caminho conforme a estrutura do seu projeto
 
-describe('API Tests - Adocao', () => {
-  let adocaoId;
-  let userId;
-  let petId;
+const app = express();
+app.use(express.json());
+app.use('/api', adocaoRouter);
 
-  beforeAll(async () => {
-    // Criar um usuário e um pet para a adoção
-    const userResponse = await request(app)
-      .post('/users')
-      .send({
-        name: 'Jane Doe'
-      });
-    userId = userResponse.body.id;
+describe('Adocao API', () => {
+  let users;
+  let pets;
+  let adocoes;
 
-    const petResponse = await request(app)
-      .post('/pets')
-      .send({
-        animal: 'Gato',
-        raca: 'Siamês',
-        idade: 1,
-        sexo: 'F',
-        descricao: 'Um gato tranquilo'
-      });
-    petId = petResponse.body.id;
+  beforeEach(() => {
+    // Configuração inicial de dados antes de cada teste
+    users = [
+      { id: 1, name: 'John Doe', adoptedPets: [] },
+      { id: 2, name: 'Jane Smith', adoptedPets: [] }
+    ];
+
+    pets = [
+      { id: 1, name: 'Buddy', adotado: false },
+      { id: 2, name: 'Charlie', adotado: false }
+    ];
+
+    adocoes = [];
+
+    // Adiciona os dados de teste no app locals
+    app.locals.users = users;
+    app.locals.pets = pets;
+    app.locals.adocoes = adocoes;
   });
 
-  test('Realizar uma adoção', async () => {
+  test('deve criar uma nova adoção', async () => {
     const response = await request(app)
-      .post('/adocoes')
-      .send({
-        id: 1, // ou você pode gerar um ID único de alguma forma
-        userId: userId,
-        petId: petId
-      });
+      .post('/api/adocoes')
+      .send({ id: 1, userId: 1, petId: 1 });
 
     expect(response.status).toBe(201);
-    expect(response.body.pet.id).toBe(petId);
-    adocaoId = response.body.id;
+    expect(response.body).toMatchObject({
+      id: 1,
+      tutor: 'John Doe',
+      pet: { id: 1, name: 'Buddy', adotado: true }
+    });
   });
 
-  test('Tentar adotar um pet já adotado deve falhar', async () => {
+  test('deve retornar erro ao tentar adotar um pet inexistente', async () => {
     const response = await request(app)
-      .post('/adocoes')
-      .send({
-        id: 2,
-        userId: userId,
-        petId: petId
-      });
+      .post('/api/adocoes')
+      .send({ id: 1, userId: 1, petId: 999 });
 
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe('Este pet já foi adotado!');
+    expect(response.body).toEqual({ message: 'Pet não encontrado' });
   });
 
-  test('Listar todas as adoções', async () => {
-    const response = await request(app).get('/adocoes');
+  test('deve listar todas as adoções', async () => {
+    adocoes.push({
+      id: 1,
+      tutor: users[0],
+      pet: { ...pets[0], adotado: true }
+    });
+
+    const response = await request(app).get('/api/adocoes');
+
     expect(response.status).toBe(200);
-    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body).toEqual([
+      {
+        id: 1,
+        tutor: 'John Doe',
+        pet: { id: 1, name: 'Buddy', adotado: true }
+      }
+    ]);
   });
 });

@@ -3,22 +3,34 @@ const User = require('../models/User');
 const Pets = require('../models/animais');
 
 exports.createAdocao = (req, res) => {
-  const { id, userId, petId } = req.body;
-  const users = User.listAllUsers(); // Pega todos os usuários
-  const pets = Pets.listAllPets(); // Pega todos os pets
-  const pet = Pets.findById(pets, petId);
-  const adocoes = []; // Aqui você pode usar uma fonte de dados real
+  try {
+    const { id, userId, petId } = req.body;
+    const users = req.app.locals.users; // Pega os usuários do app locals
+    const pets = req.app.locals.pets; // Pega os pets do app locals
+    const adocoes = req.app.locals.adocoes; // Pega as adoções do app locals
+    const pet = Pets.findById(pets, petId);
 
-  const adocao = Adocao.adotarPet(adocoes, users, id, userId, pet);
-  if (typeof adocao === 'string') {
-    return res.status(400).json({ message: adocao });
+    if (!pet) {
+      return res.status(400).json({ message: 'Pet não encontrado' });
+    }
+
+    const adocao = Adocao.adotarPet(adocoes, users, id, userId, pet);
+    if (typeof adocao === 'string') {
+      return res.status(400).json({ message: adocao });
+    }
+    res.status(201).json(adocao);
+  } catch (error) {
+    console.error('Erro ao criar adoção:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
   }
-  res.status(201).json(adocao);
 };
 
 exports.listAdocoes = (req, res) => {
-  const adocoes = []; // Aqui você pode usar uma fonte de dados real
-  res.json(Adocao.listAdocoes(adocoes));
+  try {
+    const adocoes = req.app.locals.adocoes; // Pega as adoções do app locals
+    res.json(Adocao.listAdocoes(adocoes));
+  } catch (error) {
+    console.error('Erro ao listar adoções:', error);
+    res.status(500).json({ message: 'Erro interno do servidor' });
+  }
 };
-
-module.exports = exports;

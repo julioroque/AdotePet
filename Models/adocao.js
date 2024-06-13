@@ -10,23 +10,28 @@ class Adocao {
 
   // Método para adotar um animal 
   static adotarPet(adocoes, users, id, userId, pet) {
-    console.log("Users:", users); // Adicione este log
-    console.log("User.findById:", User.findById); // Adicione este log
+    console.log("Users:", users);
+    console.log("User.findById:", User.findById);
 
-    const tutor = User.findById(users, userId); // Verifica se o método está definido
-    if (!tutor) {
-      return 'Usuário não encontrado';
-    }
+    try {
+      const tutor = User.findById(users, userId);
+      if (!tutor) {
+        return 'Usuário não encontrado';
+      }
 
-    if (!pet.adotado) {
-      const adocao = new Adocao(id, tutor, pet); // Cria uma nova adoção com os dados fornecidos
-      tutor.adoptedPets.push(pet); // Adiciona o pet à lista de pets adotados pelo usuário
-      pet.tutor = tutor; // Define o tutor para o animal adotado
-      pet.adotado = true; // Marca o animal como adotado
-      adocoes.push(adocao); // Adiciona a adoção à lista de adoções
-      return adocao; // Retorna a adoção realizada
-    } else {
-      return 'Este pet já foi adotado!'; // Retorna mensagem se o pet já estiver sido adotado
+      if (!pet.adotado) {
+        const adocao = new Adocao(id, tutor, pet); // Cria uma nova adoção com os dados fornecidos
+        tutor.adoptedPets.push(pet); // Adiciona o pet à lista de pets adotados pelo usuário
+        pet.tutor = tutor; // Define o tutor para o animal adotado
+        pet.adotado = true; // Marca o animal como adotado
+        adocoes.push(adocao); // Adiciona a adoção à lista de adoções
+        return this.renderAdocao(adocao); // Retorna a adoção realizada
+      } else {
+        return 'Este pet já foi adotado!'; // Retorna mensagem se o pet já estiver sido adotado
+      }
+    } catch (error) {
+      console.error('Erro ao adotar pet:', error);
+      return 'Erro ao processar a adoção';
     }
   }
 
@@ -39,8 +44,12 @@ class Adocao {
   static renderAdocao(adocao) {
     return {
       id: adocao.id,
-      tutor: adocao.tutor.name, // Use apenas o ID do tutor
-      pet: Pets.renderPet(adocao.pet) // Renderize o pet da adoção
+      tutor: adocao.tutor.name,
+      pet: {
+        id: adocao.pet.id,
+        name: adocao.pet.name,
+        adotado: adocao.pet.adotado
+      }
     };
   }
 }
