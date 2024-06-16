@@ -1,6 +1,6 @@
 const request = require('supertest');
 const express = require('express');
-const adocaoRouter = require('../../routes/adocaoRoutes'); // ajuste o caminho conforme a estrutura do seu projeto
+const adocaoRouter = require('../routes/adocaoRoutes'); // ajuste o caminho conforme a estrutura do seu projeto
 
 const app = express();
 app.use(express.json());
