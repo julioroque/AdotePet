@@ -17,11 +17,15 @@
   },
   "homepage": "https://github.com/julioroque/AdotePet#readme",
   "devDependencies": {
+    "chai": "^5.1.1",
     "jest": "^29.7.0",
+    "mocha": "^10.4.0",
     "npm": "^10.8.1",
     "supertest": "^7.0.0"
   },
   "dependencies": {
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
   }
 }

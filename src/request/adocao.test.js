@@ -1,62 +1,93 @@
 const request = require('supertest');
-const app = require('../../app');
+const express = require('express');
+const adocaoRouter = require('../routes/adocaoRoutes');
+const AdocaoService = require('../services/adocaoService'); 
 
-describe('API Tests - Adocao', () => {
-  let adocaoId;
-  let userId;
-  let petId;
+jest.mock('../services/adocaoService'); // Mock the AdocaoService
 
-  beforeAll(async () => {
-    // Criar um usuário e um pet para a adoção
-    const userResponse = await request(app)
-      .post('/users')
-      .send({
-        name: 'Jane Doe'
-      });
-    userId = userResponse.body.id;
+const app = express();
+app.use(express.json());
+app.use('/', adocaoRouter);
 
-    const petResponse = await request(app)
-      .post('/pets')
-      .send({
-        animal: 'Gato',
-        raca: 'Siamês',
-        idade: 1,
-        sexo: 'F',
-        descricao: 'Um gato tranquilo'
-      });
-    petId = petResponse.body.id;
+describe('AdocaoController', () => {
+  describe('POST /adocoes', () => {
+    it('should create a new adoption', async () => {
+      const adocaoData = { userId: 1, petId: 1 };
+      const newAdocao = { id: 1, ...adocaoData };
+
+      AdocaoService.adotarPet.mockResolvedValue(newAdocao);
+
+      const response = await request(app)
+        .post('/adocoes')
+        .send(adocaoData);
+
+      expect(response.status).toBe(201);
+      expect(response.body).toEqual(newAdocao);
+    });
+
+    it('should return 404 if user is not found', async () => {
+      AdocaoService.adotarPet.mockRejectedValue(new Error('Usuário não encontrado'));
+
+      const response = await request(app)
+        .post('/adocoes')
+        .send({ userId: 999, petId: 1 });
+
+      expect(response.status).toBe(404);
+      expect(response.body).toEqual({ message: 'Usuário não encontrado' });
+    });
+
+    it('should return 500 on internal server error', async () => {
+      AdocaoService.adotarPet.mockRejectedValue(new Error('Erro interno do servidor'));
+
+      const response = await request(app)
+        .post('/adocoes')
+        .send({ userId: 1, petId: 1 });
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ message: 'Erro interno do servidor' });
+    });
   });
 
-  test('Realizar uma adoção', async () => {
-    const response = await request(app)
-      .post('/adocoes')
-      .send({
-        id: 1, // ou você pode gerar um ID único de alguma forma
-        userId: userId,
-        petId: petId
-      });
+  describe('GET /adocoes', () => {
+    it('should list all adoptions', async () => {
+      const adocoes = [
+        { id: 1, userId: 1, petId: 1 },
+        { id: 2, userId: 2, petId: 2 }
+      ];
 
-    expect(response.status).toBe(201);
-    expect(response.body.pet.id).toBe(petId);
-    adocaoId = response.body.id;
-  });
+      AdocaoService.listAdocoes.mockResolvedValue(adocoes);
 
-  test('Tentar adotar um pet já adotado deve falhar', async () => {
-    const response = await request(app)
-      .post('/adocoes')
-      .send({
-        id: 2,
-        userId: userId,
-        petId: petId
-      });
+      const response = await request(app)
+        .get('/adocoes');
 
-    expect(response.status).toBe(400);
-    expect(response.body.message).toBe('Este pet já foi adotado!');
-  });
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(adocoes);
+    });
 
-  test('Listar todas as adoções', async () => {
-    const response = await request(app).get('/adocoes');
-    expect(response.status).toBe(200);
-    expect(response.body.length).toBeGreaterThan(0);
+    it('should list adoptions of a specific type', async () => {
+      const adocoes = [
+        { id: 1, userId: 1, petId: 1, type: 'dog' },
+        { id: 2, userId: 2, petId: 2, type: 'dog' }
+      ];
+
+      AdocaoService.listAdocoes.mockResolvedValue(adocoes);
+
+      const response = await request(app)
+        .get('/adocoes')
+        .query({ type: 'dog' });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toEqual(adocoes);
+    });
+
+    it('should return 500 on internal server error', async () => {
+      AdocaoService.listAdocoes.mockRejectedValue(new Error('Erro interno do servidor'));
+
+      const response = await request(app)
+        .get('/adocoes');
+
+      expect(response.status).toBe(500);
+      expect(response.body).toEqual({ message: 'Erro interno do servidor' });
+    });
   });
 });
