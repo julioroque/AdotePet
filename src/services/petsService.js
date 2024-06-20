@@ -39,8 +39,8 @@ class PetsService {
   static async update(id, data) {
     const pet = await PetsService.findById(id);
     if (pet) {
-      await pet.update(data);
-      return pet;
+      const updatedPet = await pet.update(data);
+      return PetsService.renderPet(updatedPet); // Retorna o objeto atualizado
     }
     return null;
   }
