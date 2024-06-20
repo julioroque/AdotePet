@@ -11,7 +11,7 @@ app.use('/', userRouter);
 
 describe('UserController', () => {
   describe('POST /users', () => {
-    it('should create a new user', async () => {
+    it('criar usuario', async () => {
       const newUser = { id: 1, name: 'John Doe' };
       UserService.create.mockResolvedValue(newUser);
 
@@ -23,7 +23,7 @@ describe('UserController', () => {
       expect(response.body).toEqual(newUser);
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('retornar erro ao criar usuario', async () => {
       UserService.create.mockRejectedValue(new Error('Erro ao criar usuário'));
 
       const response = await request(app)
@@ -39,7 +39,7 @@ describe('UserController', () => {
   });
 
   describe('GET /users', () => {
-    it('should list all users', async () => {
+    it('listar todos usuarios', async () => {
       const users = [
         { id: 1, name: 'John Doe' },
         { id: 2, name: 'Jane Doe' }
@@ -53,7 +53,7 @@ describe('UserController', () => {
       expect(response.body).toEqual(users);
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('erro ao listar usuario', async () => {
       UserService.listAllUsers.mockRejectedValue(new Error('Erro ao listar usuários'));
 
       const response = await request(app)
@@ -65,7 +65,7 @@ describe('UserController', () => {
   });
 
   describe('GET /users/:id', () => {
-    it('should get a user by ID', async () => {
+    it('mostrar usuario pelo id', async () => {
       const user = { id: 1, name: 'John Doe' };
       UserService.findById.mockResolvedValue(user);
 
@@ -76,7 +76,7 @@ describe('UserController', () => {
       expect(response.body).toEqual(user);
     });
 
-    it('should return 404 if user is not found', async () => {
+    it('usuario nao encontrado', async () => {
       UserService.findById.mockResolvedValue(null);
 
       const response = await request(app)
@@ -86,7 +86,7 @@ describe('UserController', () => {
       expect(response.body).toEqual({ message: 'Usuário não encontrado' });
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('erro ao procurar usuario', async () => {
       UserService.findById.mockRejectedValue(new Error('Erro ao buscar usuário'));
 
       const response = await request(app)
@@ -98,7 +98,7 @@ describe('UserController', () => {
   });
 
   describe('DELETE /users/:id', () => {
-    it('should delete a user', async () => {
+    it('deletar usuario', async () => {
       UserService.delete.mockResolvedValue(true);
 
       const response = await request(app)
@@ -108,7 +108,7 @@ describe('UserController', () => {
       expect(response.body).toEqual({ message: 'Usuário deletado com sucesso!' });
     });
 
-    it('should return 404 if user is not found', async () => {
+    it('erro ao encontrar usuario para deletar', async () => {
       UserService.delete.mockResolvedValue(false);
 
       const response = await request(app)
@@ -118,7 +118,7 @@ describe('UserController', () => {
       expect(response.body).toEqual({ message: 'Usuário não encontrado' });
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('erro ao deletar usuario', async () => {
       UserService.delete.mockRejectedValue(new Error('Erro ao deletar usuário'));
 
       const response = await request(app)

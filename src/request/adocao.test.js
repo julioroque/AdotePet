@@ -11,7 +11,7 @@ app.use('/', adocaoRouter);
 
 describe('AdocaoController', () => {
   describe('POST /adocoes', () => {
-    it('should create a new adoption', async () => {
+    it('criar adocao', async () => {
       const adocaoData = { userId: 1, petId: 1 };
       const newAdocao = { id: 1, ...adocaoData };
 
@@ -25,7 +25,7 @@ describe('AdocaoController', () => {
       expect(response.body).toEqual(newAdocao);
     });
 
-    it('should return 404 if user is not found', async () => {
+    it('erro ao procurar usuario para adocao', async () => {
       AdocaoService.adotarPet.mockRejectedValue(new Error('Usuário não encontrado'));
 
       const response = await request(app)
@@ -36,7 +36,7 @@ describe('AdocaoController', () => {
       expect(response.body).toEqual({ message: 'Usuário não encontrado' });
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('erro interno do server', async () => {
       AdocaoService.adotarPet.mockRejectedValue(new Error('Erro interno do servidor'));
 
       const response = await request(app)
@@ -49,7 +49,7 @@ describe('AdocaoController', () => {
   });
 
   describe('GET /adocoes', () => {
-    it('should list all adoptions', async () => {
+    it('listar todas adocoes', async () => {
       const adocoes = [
         { id: 1, userId: 1, petId: 1 },
         { id: 2, userId: 2, petId: 2 }
@@ -64,7 +64,7 @@ describe('AdocaoController', () => {
       expect(response.body).toEqual(adocoes);
     });
 
-    it('should list adoptions of a specific type', async () => {
+    it('listar adocao por tipo de animal', async () => {
       const adocoes = [
         { id: 1, userId: 1, petId: 1, type: 'dog' },
         { id: 2, userId: 2, petId: 2, type: 'dog' }
@@ -80,7 +80,7 @@ describe('AdocaoController', () => {
       expect(response.body).toEqual(adocoes);
     });
 
-    it('should return 500 on internal server error', async () => {
+    it('erro ao listar usuarios', async () => {
       AdocaoService.listAdocoes.mockRejectedValue(new Error('Erro interno do servidor'));
 
       const response = await request(app)
