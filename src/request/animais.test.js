@@ -17,7 +17,7 @@ describe('Pets API', () => {
     jest.clearAllMocks();
   });
 
-  it('should create a new pet', async () => {
+  it('criar novo pet', async () => {
     const newPet = {
       animal: 'cachorro',
       raca: 'vira-lata',
@@ -36,7 +36,7 @@ describe('Pets API', () => {
     expect(response.body).toMatchObject(newPet);
   });
 
-  it('should list all pets', async () => {
+  it('listar todos os pets', async () => {
     const pets = [
       { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false },
       { id: 2, animal: 'gato', raca: 'siamês', idade: 3, sexo: 'fêmea', descricao: 'Um gato gracioso', adotado: false }
@@ -51,7 +51,7 @@ describe('Pets API', () => {
     expect(response.body).toEqual(pets);
   });
 
-  it('should list available pets', async () => {
+  it('listar pets disponiveis', async () => {
     const availablePets = [
       { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false }
     ];
@@ -65,7 +65,7 @@ describe('Pets API', () => {
     expect(response.body).toEqual(availablePets);
   });
 
-  it('should get pet by id', async () => {
+  it('lsitar pet por id', async () => {
     const pet = { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false };
 
     Pets.findByPk.mockResolvedValue(pet);
@@ -78,25 +78,37 @@ describe('Pets API', () => {
   });
 
   it('deve atualizar um pet', async () => {
-    const pet = { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false };
+    const petOriginal = { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false };
     const updatedData = { idade: 3, descricao: 'Um cachorro muito amigável' };
+    const petAtualizado = { ...petOriginal, ...updatedData };
   
-    // Aqui garantimos que o método update realmente atualiza o objeto
+    // Crie um mock para o método update
+    const mockUpdate = jest.fn().mockResolvedValue(petAtualizado);
+  
+    // Simule a função findByPk para retornar um objeto com o método update simulado
     Pets.findByPk.mockResolvedValue({
-      ...pet,
-      update: jest.fn().mockImplementation((data) => {
-        return { ...pet, ...data };
-      })
+      ...petOriginal,
+      update: mockUpdate
     });
   
+    // Simule a resposta do endpoint para retornar o objeto atualizado
     const response = await request(app)
       .put('/api/pets/1')
-      .send(updatedData);
+      .send(updatedData)
+      .expect(200);
   
-    expect(response.status).toBe(200);
+    // Verifique se a resposta do endpoint é o objeto atualizado
+    expect(response.body).toEqual(petAtualizado);
+  
+    // Verifique se o método findByPk foi chamado com o ID correto
+    expect(Pets.findByPk).toHaveBeenCalledWith(1);
+  
+    // Verifique se o método update foi chamado com os dados corretos
+    expect(mockUpdate).toHaveBeenCalledWith(updatedData);
   });
+  
 
-  it('should delete a pet', async () => {
+  it('deletar um pet', async () => {
     const pet = { id: 1, animal: 'cachorro', raca: 'vira-lata', idade: 2, sexo: 'macho', descricao: 'Um cachorro amigável', adotado: false };
 
     Pets.findByPk.mockResolvedValue({
